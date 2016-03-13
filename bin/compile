@@ -211,8 +211,8 @@ if [ ! -d $CACHE_DIR/node ]; then
 fi
 
 # Move node (and npm) into ./vendor and make them executable
-mkdir -p $BUILD_DIR/vendor/node
-cp -R $CACHE_DIR/node $BUILD_DIR/vendor/node
+mkdir -p $BUILD_DIR/vendor
+cp -R $CACHE_DIR/node $BUILD_DIR/vendor
 chmod +x $BUILD_DIR/vendor/node/bin/*
 PATH=$BUILD_DIR/vendor/node/bin:$PATH
 
