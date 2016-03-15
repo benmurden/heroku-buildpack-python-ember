@@ -10,6 +10,6 @@ if [ ! -d $CACHE_DIR/node ]; then
   puts-step "Downloading and installing node"
   node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
   curl $node_url -s -o - | tar xzf - -C $BUILD_DIR
-  mv $BUILD_DIR/node-v$node_version-linux-x64 $CACHE_DIR/node
+  mv $BUILD_DIR/node-v$node_version-linux-x64 .heroku/node
   rm -rf $BUILD_DIR/node-v$node_version-linux-x64
 fi
