@@ -3,7 +3,7 @@
 source $BIN_DIR/utils
 
 # Install node
-semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.]+)"/\1/p')
+semver_range=$(sub-env "cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*\"node\":\s?\"([\^0-9.]+)\"/\1/p'")
 node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
 
 if [ ! -d $CACHE_DIR/node ]; then
@@ -33,7 +33,7 @@ if [ ! type ember >/dev/null 2>&1 ]; then
   puts-step "Installing Ember-CLI"
   npm install -g ember-cli@$target_ember_ver >/dev/null
 else
-  $ember_ver=$(ember -v | sed -n -e 's/^.*version:\s//p')
+  $ember_ver=$(ember -v 2>/dev/null | sed -n -e 's/^.*version:\s//p')
 
   if [ "$target_ember_ver" != "$ember_ver" ]; then
     puts-step "Installing Ember-CLI"

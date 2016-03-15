@@ -206,8 +206,7 @@ set -e
 mkdir -p $(dirname $PROFILE_PATH)
 
 # Install node, bower, and ember-cli.
-chmod +x $BIN_DIR/steps/node
-sub-env $BIN_DIR/steps/node
+source $BIN_DIR/steps/node
 
 bpwatch start ember_build
   if [ -f bin/ember_build ]; then
