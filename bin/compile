@@ -216,7 +216,7 @@ chmod +x $BUILD_DIR/vendor/node/bin/*
 PATH=$BUILD_DIR/vendor/node/bin:$PATH
 
 # Install Bower
-if [ ! type bower >/dev/null 2>&1 ]; then
+if [ ! $(type bower >/dev/null 2>&1) ]; then
   puts-step "Installing bower"
   npm install -g bower >/dev/null
 fi
@@ -224,11 +224,11 @@ fi
 # Install Ember-cli
 target_ember_ver="1.13.15"
 
-if [ ! type ember >/dev/null 2>&1 ]; then
+if [ ! $(type ember >/dev/null 2>&1) ]; then
   puts-step "Installing Ember-CLI"
   npm install -g ember-cli@$target_ember_ver >/dev/null
 else
-  ember_ver=$(ember -v || true | sed -n -e 's/^.*version:\s//p')
+  ember_ver=$(ember -v | sed -n -e 's/^.*version:\s//p')
 
   if [ "$target_ember_ver" != "$ember_ver" ]; then
     puts-step "Installing Ember-CLI"
