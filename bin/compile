@@ -198,6 +198,13 @@ echo $PATH | indent
 echo "setting SWIG_LIB environment var"
 export SWIG_LIB=$BUILD_DIR/.paybox/swig/share/swig/2.0.5/
 
+set +e
+# Create set-aside `.heroku` folder.
+mkdir .heroku &> /dev/null
+set -e
+
+mkdir -p $(dirname $PROFILE_PATH)
+
 # Install node, bower, and ember-cli.
 sub-env $BIN_DIR/steps/node
 
@@ -208,13 +215,6 @@ bpwatch start ember_build
     sub-env bin/ember_build
   fi
 bpwatch stop ember_build
-
-set +e
-# Create set-aside `.heroku` folder.
-mkdir .heroku &> /dev/null
-set -e
-
-mkdir -p $(dirname $PROFILE_PATH)
 
 # Install Python.
 source $BIN_DIR/steps/python
