@@ -199,7 +199,7 @@ echo "setting SWIG_LIB environment var"
 export SWIG_LIB=$BUILD_DIR/.paybox/swig/share/swig/2.0.5/
 
 # Install node
-semver_range=cat $BUILD_DIR/${EMBER_APP_DIR}package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.]+)"/\1/p'
+semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.]+)"/\1/p')
 node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
 
 if [  ! -d $CACHE_DIR/node ]; then
