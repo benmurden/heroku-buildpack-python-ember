@@ -198,38 +198,8 @@ echo $PATH | indent
 echo "setting SWIG_LIB environment var"
 export SWIG_LIB=$BUILD_DIR/.paybox/swig/share/swig/2.0.5/
 
-# Install node
-semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.]+)"/\1/p')
-node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
-
-if [  ! -d $CACHE_DIR/node ]; then
-  puts-step "Downloading and installing node"
-  node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
-  curl $node_url -s -o - | tar xzf - -C $BUILD_DIR
-  mv $BUILD_DIR/node-v$node_version-linux-x64 $CACHE_DIR/node
-  rm -rf $BUILD_DIR/node-v$node_version-linux-x64
-fi
-
-# Move node (and npm) into ./vendor and make them executable
-mkdir -p $BUILD_DIR/vendor
-cp -R $CACHE_DIR/node $BUILD_DIR/vendor
-chmod +x $BUILD_DIR/vendor/node/bin/*
-PATH=$BUILD_DIR/vendor/node/bin:$PATH
-
-# Install Bower
-if [ ! type bower >/dev/null 2>&1 ]; then
-  puts-step "Installing bower"
-  npm install -g bower >/dev/null
-fi
-
-# Install Ember-cli
-target_ember_ver="1.13.15"
-$ember_ver=ember -v | sed -n -e 's/^.*version:\s//p'
-
-if [ $target_ember_ver != $ember_ver ]; then
-  puts-step "Installing Ember-CLI"
-  npm install -g ember-cli >/dev/null
-fi
+# Install node, bower, and ember-cli.
+sub-env $BIN_DIR/steps/node
 
 bpwatch start ember_build
   if [ -f bin/ember_build ]; then
