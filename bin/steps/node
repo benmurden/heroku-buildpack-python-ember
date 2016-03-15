@@ -6,7 +6,7 @@ source $BIN_DIR/utils
 semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.]+)"/\1/p')
 node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
 
-if [ ! -d $CACHE_DIR/node ]; then
+if [ ! $(type npm >/dev/null 2>&1) ]; then
   puts-step "Downloading and installing node"
   node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
   curl $node_url -s -o - | tar xzf - -C $BUILD_DIR
