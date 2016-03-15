@@ -228,7 +228,7 @@ if [ ! type ember >/dev/null 2>&1 ]; then
   puts-step "Installing Ember-CLI"
   npm install -g ember-cli@$target_ember_ver >/dev/null
 else
-  $ember_ver=$(ember -v 2>/dev/null | sed -n -e 's/^.*version:\s//p')
+  $ember_ver=$(ember -v || true | sed -n -e 's/^.*version:\s//p')
 
   if [ "$target_ember_ver" != "$ember_ver" ]; then
     puts-step "Installing Ember-CLI"
