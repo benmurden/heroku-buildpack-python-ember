@@ -206,7 +206,8 @@ set -e
 mkdir -p $(dirname $PROFILE_PATH)
 
 # Install node, bower, and ember-cli.
-source $BIN_DIR/steps/node
+chmod +x $BIN_DIR/steps/node
+sub-env $BIN_DIR/steps/node
 
 # Move node (and npm) into ./vendor and make them executable
 mkdir -p $BUILD_DIR/vendor
