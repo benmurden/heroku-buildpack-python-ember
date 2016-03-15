@@ -9,8 +9,11 @@ node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" http
 if [ ! $(type npm >/dev/null 2>&1) ]; then
   puts-step "Downloading and installing node"
   node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
-  curl $node_url -s -o - | tar xzf - -C $BUILD_DIR
-  mv $BUILD_DIR/node-v$node_version-linux-x64 .heroku/node
-  rm -rf $BUILD_DIR/node-v$node_version-linux-x64
-  chmod +x .heroku/node/bin/*
+  mkdir -p .heroku/node
+  curl $node_url -s | tar xzv -C .heroku/node &> /dev/null
+  if [[ $? != 0 ]] ; then
+    puts-warn "Requested runtime ($node_version) is not available."
+    puts-warn "Aborting."
+    exit 1
+  fi
 fi
