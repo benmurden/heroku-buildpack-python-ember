@@ -10,9 +10,9 @@ if [ ! $(type npm >/dev/null 2>&1) ]; then
   puts-step "Downloading and installing node"
   node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
   mkdir -p .heroku/node
-  curl $node_url -s | tar xzv -C .heroku/node &> /dev/null
+  curl $node_url -s | tar xzv -C $BUILD_DIR/.heroku/node &> /dev/null
   if [[ $? != 0 ]] ; then
-    puts-warn "Requested runtime ($node_version) is not available."
+    puts-warn "Requested node runtime ($node_version) is not available."
     puts-warn "Aborting."
     exit 1
   fi

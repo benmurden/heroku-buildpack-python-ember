@@ -210,6 +210,9 @@ mkdir -p $(dirname $PROFILE_PATH)
 chmod +x $BIN_DIR/steps/node
 sub-env $BIN_DIR/steps/node
 export PATH=$PATH:$BUILD_DIR/.heroku/node/bin/
+chmod +x .heroku/node/bin/*
+ls $BUILD_DIR/.heroku/node/bin
+which npm
 
 # Install Bower
 if [ ! $(type bower >/dev/null 2>&1) ]; then
