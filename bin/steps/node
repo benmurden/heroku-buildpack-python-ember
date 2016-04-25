@@ -17,7 +17,7 @@ if ! type npm &>/dev/null; then
     exit 1
   fi
 
-  mv /tmp/node-v$node_version-linux-x64/* .heroku/node
+  cp -r /tmp/node-v$node_version-linux-x64/* .heroku/node
   chmod +x .heroku/node/bin/*
   rm -rf /tmp/node-v$node_version-linux-x64
 fi
