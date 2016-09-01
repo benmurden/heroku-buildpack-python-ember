@@ -264,6 +264,9 @@ sub-env $BIN_DIR/steps/geo-libs
 # GDAL support.
 source $BIN_DIR/steps/gdal
 
+# GeoIP support.
+source $BIN_DIR/steps/geoip
+
 # Install dependencies with Pip.
 source $BIN_DIR/steps/pip-install
 

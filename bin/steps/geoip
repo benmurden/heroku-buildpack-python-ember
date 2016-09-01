@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# This script serves as the Maxmind GeoIP C library build step of the
+# [**Python Buildpack**](https://github.com/Bouke/heroku-buildpack-python)
+# compiler.
+#
+# A [buildpack](https://devcenter.heroku.com/articles/buildpacks) is an
+# adapter between a Python application and Heroku's runtime.
+#
+# This script is invoked by [`bin/compile`](/).
+
+GEOIP_DIST_URL="https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz"
+GEOIP_DIST_DIR="GeoIP-1.6.0"
+
+GEOLITECITY_URL="http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
+GEOLITECITY_DIR="geoip"
+GEOLITECITY_FILE="GeoLiteCity.dat"
+
+# Syntax sugar.
+source $BIN_DIR/utils
+
+bpwatch start geoip_install
+
+if (pip-grep -s requirements.txt geoip pygeoip &> /dev/null) then
+
+  if [ -d ".heroku/vendor/lib/geoip-1.6.0" ]; then
+    export GEOIP=$(pwd)/vendor
+  else
+    echo "-----> Noticed geoip. Bootstrapping Maxmind GeoIP C Library."
+    mkdir -p .heroku/vendor
+
+    if [ ! -d "$CACHE_DIR/.geoip" ]; then
+        mkdir -p $CACHE_DIR/.geoip
+    fi
+
+    cd $CACHE_DIR/.geoip
+
+    if [ ! -f "geoip.tar.gz" ]; then
+      curl -s -L -o geoip.tar.gz $GEOIP_DIST_URL
+    fi
+
+    tar -zxvf geoip.tar.gz > /dev/null
+    cd $GEOIP_DIST_DIR
+    ./configure --prefix=$BUILD_DIR/.heroku/vendor > /dev/null
+    make install > /dev/null
+
+    export GEOIP=$BUILD_DIR/.heroku/vendor
+  fi
+
+  cd $BUILD_DIR/$GEOLITECITY_DIR
+  if [ ! -f $GEOLITECITY_FILE ]; then
+      curl -s -L -o ${GEOLITECITY_FILE}.gz $GEOLITECITY_URL
+      gunzip ${GEOLITECITY_FILE}.gz > /dev/null
+  fi
+  echo "       GeoIP City Database is available at: $(pwd)/${GEOLITECITY_FILE}"
+
+  cd $BUILD_DIR
+fi
+
+bpwatch stop geoip_install
