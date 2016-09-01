@@ -11,17 +11,20 @@
 
 GEOIP_DIST_URL="https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz"
 GEOIP_DIST_DIR="GeoIP-1.6.0"
+GEOIP_DIR="geoip"
 
 GEOLITECITY_URL="http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
-GEOLITECITY_DIR="geoip"
 GEOLITECITY_FILE="GeoLiteCity.dat"
+
+GEOCOUNTRY_URL="http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz"
+GEOCOUNTRY_FILE="GeoIP.dat"
 
 # Syntax sugar.
 source $BIN_DIR/utils
 
 bpwatch start geoip_install
 
-if (pip-grep -s requirements.txt geoip pygeoip &> /dev/null) then
+if (pip-grep -s requirements.txt geoip &> /dev/null) then
 
   if [ -d ".heroku/vendor/lib/geoip-1.6.0" ]; then
     export GEOIP=$(pwd)/vendor
@@ -46,13 +49,25 @@ if (pip-grep -s requirements.txt geoip pygeoip &> /dev/null) then
 
     export GEOIP=$BUILD_DIR/.heroku/vendor
   fi
+fi
 
-  cd $BUILD_DIR/$GEOLITECITY_DIR
-  if [ ! -f $GEOLITECITY_FILE ]; then
+if (pip-grep -s requirements.txt geoip pygeoip &> /dev/null) then
+
+  cd $BUILD_DIR/$GEOIP_DIR
+
+  if [ "$GEOIP_CITY" ] then
+    if [ ! -f "$GEOLITECITY_FILE" ]; then
       curl -s -L -o ${GEOLITECITY_FILE}.gz $GEOLITECITY_URL
       gunzip ${GEOLITECITY_FILE}.gz > /dev/null
+    fi
+    echo "       GeoIP City Database is available at: $(pwd)/${GEOLITECITY_FILE}"
+  else
+    if [ ! -f "$GEOCOUNTRY_FILE" ] then
+      curl -s -L -o ${GEOCOUNTRY_FILE}.gz $GEOCOUNTRY_URL
+      gunzip ${GEOCOUNTRY_FILE}.gz > /dev/null
+    fi
+    echo "       GeoIP Country Database is available at: $(pwd)/${GEOCOUNTRY_FILE}"
   fi
-  echo "       GeoIP City Database is available at: $(pwd)/${GEOLITECITY_FILE}"
 
   cd $BUILD_DIR
 fi
