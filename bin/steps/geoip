@@ -55,14 +55,14 @@ if (pip-grep -s requirements.txt geoip pygeoip &> /dev/null) then
 
   cd $BUILD_DIR/$GEOIP_DIR
 
-  if [ "$GEOIP_CITY" ] then
+  if [ "$GEOIP_CITY" ]; then
     if [ ! -f "$GEOLITECITY_FILE" ]; then
       curl -s -L -o ${GEOLITECITY_FILE}.gz $GEOLITECITY_URL
       gunzip ${GEOLITECITY_FILE}.gz > /dev/null
     fi
     echo "       GeoIP City Database is available at: $(pwd)/${GEOLITECITY_FILE}"
   else
-    if [ ! -f "$GEOCOUNTRY_FILE" ] then
+    if [ ! -f "$GEOCOUNTRY_FILE" ]; then
       curl -s -L -o ${GEOCOUNTRY_FILE}.gz $GEOCOUNTRY_URL
       gunzip ${GEOCOUNTRY_FILE}.gz > /dev/null
     fi
