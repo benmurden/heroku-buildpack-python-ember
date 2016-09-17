@@ -53,6 +53,7 @@ fi
 
 if (pip-grep -s requirements.txt geoip pygeoip &> /dev/null) then
 
+  mkdir -p $BUILD_DIR/$GEOIP_DIR
   cd $BUILD_DIR/$GEOIP_DIR
 
   if [ "$GEOIP_CITY" ]; then
