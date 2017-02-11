@@ -1,4 +1,7 @@
-# Heroku Buildpack: Python
+# Heroku Buildpack: Python with Ember.js support
+
+This buildpack allows you to keep your frontend source together with your Python application so it can be built when deployed.
+
 ![python](https://cloud.githubusercontent.com/assets/51578/13712821/b68a42ce-e793-11e5-96b0-d8eb978137ba.png)
 
 This is the official [Heroku buildpack](https://devcenter.heroku.com/articles/buildpacks) for Python apps, powered by [pip](https://pip.pypa.io/) and other excellent software.
