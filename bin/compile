@@ -208,8 +208,8 @@ set -e
 mkdir -p $(dirname $PROFILE_PATH)
 
 # Install node, bower, and ember-cli.
+export PATH="$BUILD_DIR/.heroku/node/bin/:$BUILD_DIR/.heroku/yarn/bin/":$PATH
 source $BIN_DIR/steps/node
-export PATH=$PATH:$BUILD_DIR/.heroku/node/bin/
 
 # Install Bower
 if ! type bower &>/dev/null; then
