@@ -4,7 +4,7 @@ source $BIN_DIR/utils
 source $BP_DIR/lib/binaries.sh
 source $BP_DIR/lib/failure.sh
 
-[ -f "$BUILD_DIR/yarn.lock" ] && YARN=true || YARN=false
+[ -f "$BUILD_DIR/$EMBER_APP_DIR/yarn.lock" ] && YARN=true || YARN=false
 
 # Install node
 semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.*]+)"/\1/p')
