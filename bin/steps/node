@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source $BIN_DIR/utils
+source=$BP_DIR/lib/environment.sh
 source $BP_DIR/lib/binaries.sh
 source $BP_DIR/lib/failure.sh
 
