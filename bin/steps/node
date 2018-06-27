@@ -1,23 +1,20 @@
 #!/usr/bin/env bash
 
 source $BIN_DIR/utils
+source $BIN_DIR/lib/binaries.sh
+source $BIN_DIR/lib/failure.sh
+
+[ -f "$BUILD_DIR/yarn.lock" ] && YARN=true || YARN=false
 
 # Install node
 semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.*]+)"/\1/p')
-node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
 
 if ! type npm &>/dev/null; then
   puts-step "Downloading and installing node $node_version"
-  node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
-  mkdir -p .heroku/node
-  curl $node_url -s | tar xzv -C /tmp &> /dev/null
-  if [[ $? != 0 ]] ; then
-    puts-warn "Requested node runtime ($node_version) is not available."
-    puts-warn "Aborting."
-    exit 1
-  fi
+  install_nodejs "$semver_range" "$BUILD_DIR/.heroku/node"
+fi
 
-  cp -r /tmp/node-v$node_version-linux-x64/* .heroku/node
-  chmod +x .heroku/node/bin/*
-  rm -rf /tmp/node-v$node_version-linux-x64
+if $YARN; then
+  puts-step "Downloading and installing yarn"
+  install_yarn "$BUILD_DIR/.heroku/yarn"
 fi
