@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 source $BIN_DIR/utils
-source $BIN_DIR/lib/binaries.sh
-source $BIN_DIR/lib/failure.sh
+source $BP_DIR/lib/binaries.sh
+source $BP_DIR/lib/failure.sh
 
 [ -f "$BUILD_DIR/yarn.lock" ] && YARN=true || YARN=false
 
