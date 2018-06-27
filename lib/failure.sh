@@ -3,6 +3,7 @@ fail_bin_install() {
   local version="$2"
 
   # re-curl the result, saving off the reason for the failure this time
+  echo "Attempting https://nodebin.herokai.com/v1/$bin/$platform/latest.txt"
   local error=$(curl --silent --get --retry 5 --retry-max-time 15 --data-urlencode "range=$version" "https://nodebin.herokai.com/v1/$bin/$platform/latest.txt")
 
   if [[ $error = "No result" ]]; then
