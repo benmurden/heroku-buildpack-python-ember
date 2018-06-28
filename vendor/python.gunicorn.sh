@@ -1,32 +1,5 @@
-case $(ulimit -u) in
-
-# Automatic configuration for Gunicorn's Workers setting.
-
-# Standard-1X (+Free, +Hobby) Dyno
-256)
-  export DYNO_RAM=512
-  export WEB_CONCURRENCY=${WEB_CONCURRENCY:-2}
-  ;;
-
-# Standard-2X Dyno
-512)
-  export DYNO_RAM=1024
-  export WEB_CONCURRENCY=${WEB_CONCURRENCY:-4}
-  ;;
-
-# Performance-M Dyno
-16384)
-  export DYNO_RAM=2560
-  export WEB_CONCURRENCY=${WEB_CONCURRENCY:-8}
-  ;;
-
-# Performance-L Dyno
-32768)
-  export DYNO_RAM=6656
-  export WEB_CONCURRENCY=${WEB_CONCURRENCY:-11}
-  ;;
-
-esac
-
 # Automatic configuration for Gunicorn's ForwardedAllowIPS setting.
 export FORWARDED_ALLOW_IPS='*'
+
+# Automatic configuration for Gunicorn's stdout access log setting.
+export GUNICORN_CMD_ARGS=${GUNICORN_CMD_ARGS:-"--access-logfile -"}
