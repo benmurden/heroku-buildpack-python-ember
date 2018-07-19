@@ -47,12 +47,26 @@ if [[ -n ${BUILDPACK_VENDOR_URL:-} ]]; then
 fi
 export VENDOR_URL
 
+# Export Path variables, for use in sub-scripts.
+export BUILD_DIR CACHE_DIR ENV_DIR
+
+# Set the Buildpack's internet target for downloading Python distributions.
+# The user can provide BUILDPACK_VENDOR_URL to specify a custom target.
+# Note: this is designed for non-Heroku use, as it does not use the user-provided
+# environment variable mechanism (the ENV_DIR).
+VENDOR_URL="https://lang-python.s3.amazonaws.com/$STACK"
+if [[ -n ${BUILDPACK_VENDOR_URL:-} ]]; then
+    VENDOR_URL="$BUILDPACK_VENDOR_URL"
+fi
+export VENDOR_URL
+
 # Which versions of Python are we using?
 # These variables are used to specify which versions of Python to install by default,
 # as well as prompt the user to upgrade if they are using an un–supported version.
 # Note: When 3.7 lands, I recommend switching to LATEST_36 and LATEST_37.
-DEFAULT_PYTHON_VERSION="python-3.6.5"
-LATEST_3="python-3.6.5"
+DEFAULT_PYTHON_VERSION="python-3.6.6"
+LATEST_36="python-3.6.6"
+LATEST_37="python-3.7.0"
 LATEST_2="python-2.7.15"
 
 # Which stack is used (for binary downloading), if none is provided (e.g. outside of Heroku)?
@@ -60,7 +74,7 @@ DEFAULT_PYTHON_STACK="cedar-14"
 # If pip doesn't match this version (the version we install), run the installer.
 PIP_UPDATE="9.0.2"
 
-export DEFAULT_PYTHON_VERSION DEFAULT_PYTHON_STACK PIP_UPDATE LATEST_2 LATEST_3
+export DEFAULT_PYTHON_VERSION DEFAULT_PYTHON_STACK PIP_UPDATE LATEST_2 LATEST_36 LATEST_37
 
 # Common Problem Warnings:
 # This section creates a temporary file in which to stick the output of `pip install`.
@@ -174,6 +188,11 @@ cp -R $CACHE_DIR/.heroku/node .heroku/ &> /dev/null || true
 # without forking the buildpack by providing a `bin/pre_compile` script, which gets
 # run inline with the buildpack automatically.
 
+# This part of the code is used to allow users to customize their build experience
+# without forking the buildpack by providing a `bin/pre_compile` script, which gets
+# run inline with the buildpack automatically.
+
+# shellcheck source=bin/steps/hooks/pre_compile
 source "$BIN_DIR/steps/hooks/pre_compile"
 
 # Sticky runtimes. If there was a previous build, and it used a given version of Python,
@@ -303,7 +322,7 @@ fi
 # Django collectstatic support.
 # The buildpack automatically runs collectstatic for Django applications.
 # This is the cause for the majority of build failures on the Python platform.
-# These failures are intentional — if collectstatic (which can be tricky, at times) fails,
+# These failures are intentional — if collectstatic (which can be tricky, at times) fails,
 # your build fails.
 (( start=$(nowms) ))
 sub_env "$BIN_DIR/steps/collectstatic"

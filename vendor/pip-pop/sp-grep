@@ -3,6 +3,7 @@
 
 """Usage:
   sp-grep [-s] <package>...
+
 Options:
   -h --help     Show this screen.
 """

@@ -6,6 +6,7 @@ shopt -s nullglob
 if [[ ! -f  /tmp/stdlib.sh ]]; then
   curl --retry 3 -s https://lang-common.s3.amazonaws.com/buildpack-stdlib/v8/stdlib.sh > /tmp/stdlib.sh
 fi
+# shellcheck source=/dev/null
 source /tmp/stdlib.sh
 
 if [ "$(uname)" == Darwin ]; then
@@ -18,6 +19,7 @@ fi
 indent() {
   sed "s/^/       /"
 }
+
 
 # Clean up pip output
 cleanup() {
