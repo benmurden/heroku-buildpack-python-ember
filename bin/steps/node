@@ -12,10 +12,12 @@ semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"
 
 if ! type npm &>/dev/null; then
   puts-step "Downloading and installing node $node_version"
+  mkdir -p "$BUILD_DIR/.heroku/node"
   install_nodejs "$semver_range" "$BUILD_DIR/.heroku/node"
 fi
 
 if $YARN; then
   puts-step "Downloading and installing yarn"
+  mkdir -p "$BUILD_DIR/.heroku/yarn"
   install_yarn "$BUILD_DIR/.heroku/yarn"
 fi
