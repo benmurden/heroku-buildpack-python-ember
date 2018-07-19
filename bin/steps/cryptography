@@ -17,8 +17,6 @@ PKG_CONFIG_PATH="/app/.heroku/vendor/lib/pkgconfig:$PKG_CONFIG_PATH"
 # Syntax sugar.
 source $BIN_DIR/utils
 
-bpwatch start libffi_install
-
 # If a package using cffi exists within requirements, use vendored libffi.
 if (pip-grep -s requirements.txt bcrypt cffi cryptography django[bcrypt] Django[bcrypt] pyOpenSSL PyOpenSSL requests[security] brotlipy &> /dev/null) then
 
@@ -33,5 +31,3 @@ if (pip-grep -s requirements.txt bcrypt cffi cryptography django[bcrypt] Django[
     export LIBFFI=$(pwd)/vendor
   fi
 fi
-
-bpwatch stop libffi_install
