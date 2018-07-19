@@ -22,8 +22,6 @@ GEOCOUNTRY_FILE="GeoIP.dat"
 # Syntax sugar.
 source $BIN_DIR/utils
 
-bpwatch start geoip_install
-
 if (pip-grep -s requirements.txt geoip &> /dev/null) then
 
   if [ -d ".heroku/vendor/lib/geoip-1.6.0" ]; then
@@ -72,5 +70,3 @@ if (pip-grep -s requirements.txt geoip pygeoip &> /dev/null) then
 
   cd $BUILD_DIR
 fi
-
-bpwatch stop geoip_install
