@@ -371,7 +371,7 @@ fi
 source $BIN_DIR/steps/cryptography
 
 # GeoIP support.
-source $BIN_DIR/steps/geoip
+# source $BIN_DIR/steps/geoip
 
 # Progamatically create .profile.d script for application runtime environment variables.
 
