@@ -355,12 +355,6 @@ mtime "collectstatic.time" "${start}"
 export PATH="$BUILD_DIR/.heroku/node/bin/:$BUILD_DIR/.heroku/yarn/bin/":$PATH
 source $BIN_DIR/steps/node
 
-# Install Bower
-if ! type bower &>/dev/null; then
-  puts-step "Installing Bower"
-  npm install -g bower >/dev/null
-fi
-
 if [ -f bin/ember_build ]; then
   puts-step "Running app build"
   npm install -g ember-cli >/dev/null
