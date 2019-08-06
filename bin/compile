@@ -357,7 +357,6 @@ source $BIN_DIR/steps/node
 
 if [ -f bin/ember_build ]; then
   puts-step "Running app build"
-  npm install -g ember-cli >/dev/null
   source bin/ember_build
 fi
 
