@@ -351,7 +351,7 @@ fi
 sub_env "$BIN_DIR/steps/collectstatic"
 mtime "collectstatic.time" "${start}"
 
-# Install node, bower, and ember-cli.
+# Install node.
 export PATH="$BUILD_DIR/.heroku/node/bin/:$BUILD_DIR/.heroku/yarn/bin/":$PATH
 source $BIN_DIR/steps/node
 
