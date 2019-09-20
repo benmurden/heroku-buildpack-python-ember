@@ -8,7 +8,11 @@ source $BP_DIR/lib/failure.sh
 [ -f "$BUILD_DIR/$EMBER_APP_DIR/yarn.lock" ] && YARN=true || YARN=false
 
 # Install node
-semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.*]+)"/\1/p')
+if [ -f $BUILD_DIR/$EMBER_APP_DIR/package.json ]; then
+  semver_range=$(cat $BUILD_DIR/$EMBER_APP_DIR/package.json | sed -n -r -e 's/^.*"node":\s?"([\^0-9.*]+)"/\1/p')
+else
+  semver_range="latest"
+fi
 
 if ! type npm &>/dev/null; then
   puts-step "Downloading and installing node $node_version"
