@@ -1,8 +1,106 @@
 # Python Buildpack Changelog
 
-# 145 (2018-11-08)
+# Master
+
+- Correct ftp to https in vendored file
+- Warn for Django 1.11 approaching EOL, provide link to roadmap
+
+--------------------------------------------------------------------------------
+
+# 165 (2020-02-27)
+
+- Python 3.8.2 now available.
+
+# 164 (2020-02-20)
+
+- Update requirements.txt builds to use Pip 20.0.2
+- Download get-pip.py to tmpdir instead of root dir
+
+# 163 (2019-12-23)
+
+- New pythons released:
+  Python 3.8.1, 3.7.6, 3.6.10 (CPython)
+  Beta Release: Pypy 2.7 and 3.6, version 7.2.0
+
+# 162 (2019-12-06)
+
+- Bug fix: fragile sqlite3 install
+
+# 161 (2019-12-2)
+
+- Bug fix: Sqlite3 version bump
+
+# 160 (2019-10-23)
+
+- Bugfix: Pipenv no longer installs twice in CI
+
+# 159 (2019-10-22)
+
+- Python 2.7.17 now available on Heroku 18 and 16.
+
+# 158 (2019-10-21)
+
+- Python 3.7.5 and 3.8.0 now available on Heroku 18 and 16.
+- Add support for Python 3.8 branch
+- Sqlite3 Update:
+  - Test Improvements
+- Add support for staging binary testing
+
+# 157 (2019-09-18)
+
+- Typo fixes
+
+# 156 (2019-09-12)
+
+- Python 3.6.9 and 3.7.4 now available.
+
+- Move get-pip utility to S3
+- Build utility and documentation updates
+- Bump Hatchet tests to point at new default python version.
+
+# 155 (2019-08-22)
+
+add docs and make target for heroku-18 bob builds
+
+# 154 (2019-07-17)
+
+Fix python 3.5.7 formula actually building 3.7.2
+
+# 153 (2019-06-21)
+
+Hotfix for broken heroku-16 deploys
+
+# 152 (2019-04-04)
+
+Python 3.7.3 now available.
+
+# 151 (2019-03-21)
+
+Python 3.5.7 and 3.4.10 now available on all Heroku stacks.
+
+# 150 (2019-03-13)
+
+Python 2.7.16 now available on all Heroku stacks.
+
+# 149 (2019-03-04)
+
+Hotfix for broken Cedar 14 deploys
+
+# 148 (2019-02-21)
+
+No user facing changes, improving internal metrics
+
+# 147 (2019-02-07)
+
+Python 3.7.2 and 3.6.8 now available on all Heroku stacks.
+
+# 146 (2018-11-11)
 
 Python 3.7.1, 3.6.7, 3.5.6 and 3.4.9 now available on all Heroku stacks.
+
+# 145 (2018-11-08)
+
+Testing and tooling expanded to better support new runtimes
 
 # 144 (2018-10-10)
 

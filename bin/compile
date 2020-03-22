@@ -57,34 +57,49 @@ export BUILD_DIR CACHE_DIR ENV_DIR
 VENDOR_URL="https://lang-python.s3.amazonaws.com/$STACK"
 if [[ -n ${BUILDPACK_VENDOR_URL:-} ]]; then
     VENDOR_URL="$BUILDPACK_VENDOR_URL"
+elif [[ -n ${USE_STAGING_BINARIES} ]]; then
+    VENDOR_URL="$USE_STAGING_BINARIES/$STACK"
 fi
 export VENDOR_URL
 
-# Which versions of Python are we using?
-# These variables are used to specify which versions of Python to install by default,
-# as well as prompt the user to upgrade if they are using an un–supported version.
-# Note: When 3.7 lands, I recommend switching to LATEST_36 and LATEST_37.
-DEFAULT_PYTHON_VERSION="python-3.6.7"
-LATEST_36="python-3.6.7"
-LATEST_37="python-3.7.1"
-LATEST_35="python-3.5.6"
-LATEST_34="python-3.4.9"
-LATEST_27="python-2.7.15"
+# Default Python Versions
+# shellcheck source=bin/default_pythons
+source "$BIN_DIR/default_pythons"
 
 # Supported Python Branches
+PY38="python-3.8"
 PY37="python-3.7"
 PY36="python-3.6"
 PY35="python-3.5"
 PY34="python-3.4"
 PY27="python-2.7"
+PYPY27="pypy2.7"
+PYPY36="pypy3.6"
 
 # Which stack is used (for binary downloading), if none is provided (e.g. outside of Heroku)?
 DEFAULT_PYTHON_STACK="cedar-14"
 # If pip doesn't match this version (the version we install), run the installer.
-PIP_UPDATE="9.0.2"
+PIP_UPDATE="20.0.2"
 
-export DEFAULT_PYTHON_VERSION DEFAULT_PYTHON_STACK PIP_UPDATE
-export LATEST_27 LATEST_36 LATEST_37 LATEST_35 LATEST_34
+for file in "$BUILD_DIR/runtime.txt" "$CACHE_DIR/.heroku/python-version" ; do
+    [ -f "$file" ] || continue
+
+    version=$(tr -d '[:space:]' < "$file")
+
+    case "$version" in "$PY34"*)
+        # Python 3.4 support was dropped in pip >= 19.2.
+        PIP_UPDATE="19.1.1"
+        break
+        ;;
+    esac
+done
+
+if [[ -f "$BUILD_DIR/Pipfile" ]]; then
+    # Do not force pipenv users to re-install pipenv locally.
+    PIP_UPDATE="9.0.2"
+fi
+
+export DEFAULT_PYTHON_STACK PIP_UPDATE
 export PY37 PY36 PY35 PY27 PY34
 
 # Common Problem Warnings:
